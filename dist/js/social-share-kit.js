@@ -1,10 +1,4 @@
-/*!
- * Social Share Kit v1.0.13 (http://socialsharekit.com)
- * Copyright 2015 Social Share Kit / Kaspars Sprogis.
- * @Licensed under Creative Commons Attribution-NonCommercial 3.0 license:
- * https://github.com/darklow/social-share-kit/blob/master/LICENSE
- * ---
- */
+
 var SocialShareKit = (function () {
     var supportsShare = /(twitter|facebook|google-plus|pinterest|tumblr|vk|linkedin|email)/,
         sep = '*|*', wrap, _wrap;
@@ -90,7 +84,10 @@ var SocialShareKit = (function () {
                     }
 
                 } else {
-                    document.location = url;
+                    var win = winOpen(url);
+                    window.setTimeout(function() {
+                        win.close();
+                    },350);
                 }
             }
 
@@ -203,7 +200,7 @@ var SocialShareKit = (function () {
                 break;
             case 'twitter':
                 url = 'https://twitter.com/intent/tweet?url=' + paramsObj.shareUrlEncoded() +
-                    '&text=' + encodeURIComponent(title + (text && title ? ' - ' : '') + text);
+                '&text=' + encodeURIComponent(title + (text && title ? ' - ' : '') + text);
                 if (via)
                     url += '&via=' + via.replace('@', '');
                 break;
@@ -212,26 +209,26 @@ var SocialShareKit = (function () {
                 break;
             case 'pinterest':
                 url = 'https://pinterest.com/pin/create/button/?url=' + paramsObj.shareUrlEncoded() +
-                    '&description=' + encodeURIComponent(text);
+                '&description=' + encodeURIComponent(text);
                 if (image)
                     url += '&media=' + encodeURIComponent(image);
                 break;
             case 'tumblr':
                 url = 'https://www.tumblr.com/share/link?url=' + paramsObj.shareUrlEncoded() +
-                    '&name=' + encodeURIComponent(title) +
-                    '&description=' + encodeURIComponent(text);
+                '&name=' + encodeURIComponent(title) +
+                '&description=' + encodeURIComponent(text);
                 break;
             case 'linkedin':
                 url = 'https://www.linkedin.com/shareArticle?mini=true&url=' + paramsObj.shareUrlEncoded() +
-                    '&title=' + encodeURIComponent(title) +
-                    '&summary=' + encodeURIComponent(text);
+                '&title=' + encodeURIComponent(title) +
+                '&summary=' + encodeURIComponent(text);
                 break;
             case 'vk':
                 url = 'https://vkontakte.ru/share.php?url=' + paramsObj.shareUrlEncoded();
                 break;
             case 'email':
                 url = 'mailto:?subject=' + encodeURIComponent(title) +
-                    '&body=' + encodeURIComponent(title + '\n' + shareUrl + '\n\n' + text + '\n');
+                '&body=' + encodeURIComponent(title + '\n' + shareUrl + '\n\n' + text + '\n');
                 break;
         }
 
@@ -279,7 +276,7 @@ var SocialShareKit = (function () {
             optKey = validOpts[a];
             dataKey = 'data-' + optKey;
             optValue = el.getAttribute(dataKey) || parent.getAttribute(dataKey) ||
-                (options[network] && typeof options[network][optKey] != 'undefined' ? options[network][optKey] : options[optKey]);
+            (options[network] && typeof options[network][optKey] != 'undefined' ? options[network][optKey] : options[optKey]);
             if (typeof optValue != 'undefined') {
                 opts[optKey] = optValue;
             }
@@ -313,8 +310,8 @@ var SocialShareKit = (function () {
             case 'google-plus':
                 url = 'https://clients6.google.com/rpc?key=AIzaSyCKSbrvQasunBoV16zDH9R33D88CeLr9gQ';
                 body = "[{\"method\":\"pos.plusones.get\",\"id\":\"p\"," +
-                    "\"params\":{\"id\":\"" + shareUrl + "\",\"userId\":\"@viewer\",\"groupId\":\"@self\",\"nolog\":true}," +
-                    "\"jsonrpc\":\"2.0\",\"key\":\"p\",\"apiVersion\":\"v1\"}]";
+                "\"params\":{\"id\":\"" + shareUrl + "\",\"userId\":\"@viewer\",\"groupId\":\"@self\",\"nolog\":true}," +
+                "\"jsonrpc\":\"2.0\",\"key\":\"p\",\"apiVersion\":\"v1\"}]";
                 parseFunc = function (r) {
                     r = JSON.parse(r);
                     if (r.length) {
